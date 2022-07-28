@@ -1,19 +1,20 @@
 import React, {useState} from 'react';
 import './App.css';
 import {ToDoList} from "./ToDoList";
+import {v1} from "uuid";
 
 export type FilterValueTypes = 'all' | 'active' | 'completed'
 
 function App() {
 
     let [tasks, setTasks] = useState([
-        {id: 1, title: 'HTML', isDone: true},
-        {id: 2, title: 'JS', isDone: true},
-        {id: 3, title: 'REACT', isDone: false},
-        {id: 4, title: 'CSS', isDone: false},
+        {id: v1(), title: 'HTML', isDone: true},
+        {id: v1(), title: 'JS', isDone: true},
+        {id: v1(), title: 'REACT', isDone: false},
+        {id: v1(), title: 'CSS', isDone: false},
     ])
 
-    const removeTask = (id: number) => {
+    const removeTask = (id: string) => {
         let filteredTasks = tasks.filter(t => t.id != id)
         setTasks(filteredTasks)
     }
@@ -33,12 +34,19 @@ function App() {
         setFilter(value)
     }
 
+    const addTask = () => {
+      let task = {id: v1(), title: 'New Task', isDone: false}
+        let newTask = [task, ...tasks]
+        setTasks(newTask)
+    }
+
     return (
         <div className="App">
             <ToDoList title='What to learn'
                       tasks={tasksForTodoList}
                       removeTask={removeTask}
                       changeFilter={changeFilter}
+                      addTask={addTask}
             />
         </div>
     );
