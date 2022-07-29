@@ -41,6 +41,7 @@ export function ToDoList(props: PropsType) {
         props.changeFilter('completed')
     }
 
+
     return (
         <div>
 
@@ -60,8 +61,14 @@ export function ToDoList(props: PropsType) {
                             props.removeTask(t.id)
                         }
 
+                        const onChangeInputHandler = () => {
+                            console.log('change')
+                        }
+
                         return <li key={t.id}>
-                            <input type="checkbox" checked={t.isDone}/>
+                            <input type="checkbox"
+                                   onChange={onChangeInputHandler}
+                                   checked={t.isDone}/>
                             <span>{t.title}</span>
                             <button onClick={onRemoveHandler}>x
                             </button>

@@ -40,6 +40,14 @@ function App() {
         setTasks(newTasks)
     }
 
+    const changeStatus = (taskId: string, isDone: boolean) => {
+      let task = tasks.find(t => t.id === taskId)
+        if (task) {
+            task.isDone = isDone
+        }
+        setTasks(tasks)
+    }
+
     return (
         <div className="App">
             <ToDoList title='What to learn'
