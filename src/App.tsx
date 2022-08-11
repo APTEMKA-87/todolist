@@ -13,13 +13,6 @@ type TodoListType = {
 
 function App() {
 
-    let [tasks, setTasks] = useState([
-        {id: v1(), title: 'HTML', isDone: true},
-        {id: v1(), title: 'JS', isDone: true},
-        {id: v1(), title: 'REACT', isDone: false},
-        {id: v1(), title: 'CSS', isDone: false},
-    ])
-
     const removeTask = (id: string) => {
         let filteredTasks = tasks.filter(t => t.id != id)
         setTasks(filteredTasks)
@@ -47,23 +40,39 @@ function App() {
         setTasks([...tasks])
     }
 
+    let todolistId1 = v1()
+    let todolistId2 = v1()
+
     let [todolists, setTodolists] = useState<Array<TodoListType>>([
-        {id: v1(), title: "What to learn", filter: "active"},
-        {id: v1(), title: "What to buy", filter: "completed"}
+        {id: todolistId1, title: "What to learn", filter: "active"},
+        {id: todolistId2, title: "What to buy", filter: "completed"}
     ])
+
+    let [tasks, setTasks] = useState({
+        [todolistId1]: [
+            {id: v1(), title: 'HTML', isDone: true},
+            {id: v1(), title: 'JS', isDone: true},
+            {id: v1(), title: 'REACT', isDone: false},
+            {id: v1(), title: 'CSS', isDone: false},
+        ],
+        [todolistId2]: [
+            {id: v1(), title: 'Book', isDone: false},
+            {id: v1(), title: 'Milk', isDone: true},
+        ]
+    })
 
     return (
         <div className="App">
             {
                 todolists.map((tl) => {
 
-                    let tasksForTodoList = tasks
+                    let tasksForTodoList = tasks[tl.id]
 
                     if (tl.filter === 'active') {
-                        tasksForTodoList = tasks.filter(t => !t.isDone)
+                        tasksForTodoList = tasksForTodoList.filter(t => !t.isDone)
                     }
                     if (tl.filter === 'completed') {
-                        tasksForTodoList = tasks.filter(t => t.isDone)
+                        tasksForTodoList = tasksForTodoList.filter(t => t.isDone)
                     }
 
                     return <ToDoList
