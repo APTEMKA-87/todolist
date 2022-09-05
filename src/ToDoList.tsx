@@ -1,6 +1,7 @@
-import React, {ChangeEvent} from "react";
-import {FilterValueTypes} from "./App";
-import {AddItemForm} from "./AddItemForm";
+import React, {ChangeEvent} from 'react';
+import {FilterValueTypes} from './App';
+import {AddItemForm} from './AddItemForm';
+import {EditableSpan} from './EditableSpan';
 
 export type TaskType = {
     id: string
@@ -35,7 +36,7 @@ export function ToDoList(props: PropsType) {
         props.removeTodolist(props.id)
     }
     const addTask = (title: string) => {
-      props.addTask(title, props.id)
+        props.addTask(title, props.id)
     }
 
     return (
@@ -64,7 +65,7 @@ export function ToDoList(props: PropsType) {
                             <input type="checkbox"
                                    onChange={onChangeInputHandler}
                                    checked={t.isDone}/>
-                            <span>{t.title}</span>
+                            <EditableSpan title={t.title}/>
                             <button onClick={onRemoveHandler}>x
                             </button>
                         </li>
