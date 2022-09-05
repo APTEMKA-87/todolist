@@ -1,7 +1,8 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import React, {ChangeEvent} from "react";
 import {FilterValueTypes} from "./App";
+import {AddItemForm} from "./AddItemForm";
 
-type TaskType = {
+export type TaskType = {
     id: string
     title: string
     isDone: boolean
@@ -33,6 +34,9 @@ export function ToDoList(props: PropsType) {
     const removeTodolist = () => {
         props.removeTodolist(props.id)
     }
+    const addTask = (title: string) => {
+      props.addTask(title, props.id)
+    }
 
     return (
         <div>
@@ -41,7 +45,7 @@ export function ToDoList(props: PropsType) {
                 <button onClick={removeTodolist}>x</button>
             </h3>
 
-            <AddItemForm id={props.id} addTask={props.addTask}/>
+            <AddItemForm addItem={addTask}/>
 
             <ul>
                 {props.tasks.map(t => {
@@ -87,40 +91,3 @@ export function ToDoList(props: PropsType) {
     )
 }
 
-type AddItemFormPropstype = {
-    addTask: (title: string, todolistId: string) => void
-    id: string
-}
-
-function AddItemForm(props: AddItemFormPropstype) {
-
-    let [newTaskTitle, setNewTaskTitle] = useState('')
-    let [error, setError] = useState<string | null>(null)
-    const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setNewTaskTitle(e.currentTarget.value)
-    }
-    const addTask = () => {
-        if (newTaskTitle.trim() !== '') {
-            props.addTask(newTaskTitle.trim(), props.id)
-            setNewTaskTitle('')
-        } else {
-            setError('Field is required')
-        }
-    }
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(null)
-        if (e.charCode === 13) {
-            props.addTask(newTaskTitle, props.id)
-            setNewTaskTitle('')
-        }
-    }
-    return <div>
-        <input value={newTaskTitle}
-               onChange={onNewTitleChangeHandler}
-               onKeyPress={onKeyPressHandler}
-               className={error ? 'error' : ''}
-        />
-        <button onClick={addTask}>+</button>
-        {error && <div className='error-message'>{error}</div>}
-    </div>
-}
