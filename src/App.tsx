@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import './App.css';
-import {TaskType, ToDoList} from "./ToDoList";
-import {v1} from "uuid";
-import {AddItemForm} from "./AddItemForm";
+import {TaskType, ToDoList} from './ToDoList';
+import {v1} from 'uuid';
+import {AddItemForm} from './AddItemForm';
 
 export type FilterValueTypes = 'all' | 'active' | 'completed'
 
@@ -63,8 +63,8 @@ function App() {
     let todolistId2 = v1()
 
     let [todolists, setTodolists] = useState<Array<TodoListType>>([
-        {id: todolistId1, title: "What to learn", filter: "all"},
-        {id: todolistId2, title: "What to buy", filter: "all"}
+        {id: todolistId1, title: 'What to learn', filter: 'all'},
+        {id: todolistId2, title: 'What to buy', filter: 'all'}
     ])
 
     let removeTodolist = (todolistId: string) => {
@@ -72,6 +72,14 @@ function App() {
         setTodolists(filteredTodolist)
         delete tasksObj[todolistId]
         setTasksObj(tasksObj)
+    }
+
+    function changeTodolistTitle(todolistId: string, newTitle: string) {
+        const todolist = todolists.find(tl => tl.id === todolistId)
+        if (todolist) {
+            todolist.title = newTitle
+            setTodolists([...todolists])
+        }
     }
 
     let [tasksObj, setTasksObj] = useState<TaskStateType>({
@@ -127,6 +135,7 @@ function App() {
                         changeTaskTitle={changeTaskTitle}
                         filter={tl.filter}
                         removeTodolist={removeTodolist}
+                        changeTodolistTitle={changeTodolistTitle}
                     />
                 })
             }
