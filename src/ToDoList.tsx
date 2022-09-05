@@ -8,14 +8,15 @@ type TaskType = {
 }
 
 type PropsType = {
-    id:string
+    id: string
     title: string
     tasks: TaskType[]
-    removeTask: (taskId: string) => void
+    removeTask: (taskId: string, todolistId: string) => void
     changeFilter: (value: FilterValueTypes, todolistId: string) => void
-    addTask: (title: string) => void
-    changeTaskStatus: (taskId: string, isDone: boolean) => void
+    addTask: (title: string, todolistId: string) => void
+    changeTaskStatus: (taskId: string, isDone: boolean, todolistId: string) => void
     filter: FilterValueTypes
+    removeTodolist: (todolistId: string) => void
 }
 
 export function ToDoList(props: PropsType) {
@@ -29,13 +30,13 @@ export function ToDoList(props: PropsType) {
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         setError(null)
         if (e.charCode === 13) {
-            props.addTask(newTaskTitle)
+            props.addTask(newTaskTitle, props.id)
             setNewTaskTitle('')
         }
     }
     const addTask = () => {
         if (newTaskTitle.trim() !== '') {
-            props.addTask(newTaskTitle.trim())
+            props.addTask(newTaskTitle.trim(), props.id)
             setNewTaskTitle('')
         } else {
             setError('Field is required')
@@ -51,12 +52,16 @@ export function ToDoList(props: PropsType) {
     const onCompletedClickHandler = () => {
         props.changeFilter('completed', props.id)
     }
-
+    const removeTodolist = () => {
+        props.removeTodolist(props.id)
+    }
 
     return (
         <div>
 
-            <h3>{props.title}</h3>
+            <h3>{props.title}
+                <button onClick={removeTodolist}>x</button>
+            </h3>
             <div>
                 <input value={newTaskTitle}
                        onChange={onNewTitleChangeHandler}
@@ -71,11 +76,11 @@ export function ToDoList(props: PropsType) {
                 {props.tasks.map(t => {
 
                         const onRemoveHandler = () => {
-                            props.removeTask(t.id)
+                            props.removeTask(t.id, props.id)
                         }
 
                         const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                            props.changeTaskStatus(t.id, e.currentTarget.checked)
+                            props.changeTaskStatus(t.id, e.currentTarget.checked, props.id)
                         }
 
                         return <li key={t.id}
