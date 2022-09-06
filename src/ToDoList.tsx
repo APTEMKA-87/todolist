@@ -60,7 +60,7 @@ export function ToDoList(props: PropsType) {
 
             <AddItemForm addItem={addTask}/>
 
-            <ul>
+            <div>
                 {props.tasks.map(t => {
 
                         const onRemoveHandler = () => {
@@ -74,7 +74,7 @@ export function ToDoList(props: PropsType) {
                             props.changeTaskTitle(t.id, newValue, props.id)
                         }
 
-                        return <li key={t.id}
+                        return <div key={t.id}
                                    className={t.isDone === true ? 'is-done' : ''}
                         >
                             <Checkbox onChange={onChangeStatusHandler}
@@ -86,10 +86,10 @@ export function ToDoList(props: PropsType) {
                                 <Delete/>
                             </IconButton>
 
-                        </li>
+                        </div>
                     }
                 )}
-            </ul>
+            </div>
 
             <div>
                 <Button variant={props.filter === 'all' ? 'contained' : 'text'}
