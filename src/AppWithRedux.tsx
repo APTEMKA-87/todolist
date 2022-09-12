@@ -1,4 +1,4 @@
-import React, {useReducer} from 'react';
+import React, {useCallback, useReducer} from 'react';
 import './App.css';
 import {ToDoList} from './ToDoList';
 import {v1} from 'uuid';
@@ -35,7 +35,7 @@ import {TasksStateType, TodolistType} from "./App";
 export type FilterValueTypes = 'all' | 'active' | 'completed'
 
 function AppWithRedux() {
-
+    console.log('AppWithRedux')
     const dispatch = useDispatch()
     const todolists = useSelector<AppRootStateType, TodolistType[]>(state => state.todolists)
     const tasksObj = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
@@ -75,10 +75,10 @@ function AppWithRedux() {
         dispatch(action);
     }
 
-    function addTodolist(title: string) {
+    const addTodolist = useCallback((title: string) => {
         const action = addTodolistAC(title);
         dispatch(action);
-    }
+    }, [])
 
     return (
         <div className="App">
