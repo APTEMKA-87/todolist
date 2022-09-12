@@ -40,40 +40,40 @@ function AppWithRedux() {
     const todolists = useSelector<AppRootStateType, TodolistType[]>(state => state.todolists)
     const tasksObj = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
 
-    function removeTask(id: string, todolistId: string) {
+    const removeTask = useCallback((id: string, todolistId: string) => {
         const action = removeTaskAC(id, todolistId);
         dispatch(action);
-    }
+    }, [])
 
-    function addTask(title: string, todolistId: string) {
+    const addTask = useCallback((title: string, todolistId: string) => {
         const action = addTaskAC(title, todolistId);
         dispatch(action);
-    }
+    }, [])
 
-    function changeStatus(id: string, isDone: boolean, todolistId: string) {
+    const changeStatus = useCallback((id: string, isDone: boolean, todolistId: string) => {
         const action = changeTaskStatusAC(id, isDone, todolistId);
         dispatch(action);
-    }
+    }, [])
 
-    function changeTaskTitle(id: string, newTitle: string, todolistId: string) {
+    const changeTaskTitle = useCallback((id: string, newTitle: string, todolistId: string) => {
         const action = changeTaskTitleAC(id, newTitle, todolistId);
         dispatch(action);
-    }
+    }, [])
 
-    function changeFilter(value: FilterValueTypes, todolistId: string) {
+    const changeFilter = useCallback((value: FilterValueTypes, todolistId: string) => {
         const action = changeTodolistFilterAC(value, todolistId);
         dispatch(action);
-    }
+    }, [])
 
-    function removeTodolist(id: string) {
+    const removeTodolist = useCallback((id: string) => {
         const action = removeTodolistAC(id);
         dispatch(action);
-    }
+    }, [])
 
-    function changeTodolistTitle(id: string, title: string) {
+    const changeTodolistTitle = useCallback((id: string, title: string) => {
         const action = changeTodolistTitleAC(id, title);
         dispatch(action);
-    }
+    }, [])
 
     const addTodolist = useCallback((title: string) => {
         const action = addTodolistAC(title);

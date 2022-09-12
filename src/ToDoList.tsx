@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, useCallback} from 'react';
 import {FilterValueTypes} from './App';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
@@ -26,8 +26,8 @@ type PropsType = {
     changeTodolistTitle: (todolistId: string, newTitle: string) => void
 }
 
-export function ToDoList(props: PropsType) {
-
+export const ToDoList=React.memo((props: PropsType) =>{
+    console.log('ToDoList')
     const onAllClickHandler = () => {
         props.changeFilter('all', props.id)
     }
@@ -40,9 +40,9 @@ export function ToDoList(props: PropsType) {
     const removeTodolist = () => {
         props.removeTodolist(props.id)
     }
-    const addTask = (title: string) => {
+    const addTask = useCallback((title: string) => {
         props.addTask(title, props.id)
-    }
+    }, [])
     const changeTodolistTitle = (newTitle: string) => {
         props.changeTodolistTitle(props.id, newTitle)
     }
@@ -76,7 +76,7 @@ export function ToDoList(props: PropsType) {
                         }
 
                         return <div key={t.id}
-                                   className={t.isDone === true ? 'is-done' : ''}
+                                    className={t.isDone === true ? 'is-done' : ''}
                         >
                             <Checkbox onChange={onChangeStatusHandler}
                                       checked={t.isDone}/>
@@ -109,5 +109,5 @@ export function ToDoList(props: PropsType) {
             </div>
         </div>
     )
-}
+})
 
