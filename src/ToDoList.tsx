@@ -1,9 +1,10 @@
-import React, {ChangeEvent, useCallback} from 'react';
+import React, {useCallback} from 'react';
 import {FilterValueTypes} from './App';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
-import {Button, Checkbox, IconButton} from '@material-ui/core';
+import {Button, IconButton} from '@material-ui/core';
 import {Delete} from '@material-ui/icons';
+import {Task} from "./Task";
 
 
 export type TaskType = {
@@ -16,9 +17,9 @@ type PropsType = {
     id: string
     title: string
     tasks: TaskType[]
-    removeTask: (taskId: string, todolistId: string) => void
     changeFilter: (value: FilterValueTypes, todolistId: string) => void
     addTask: (title: string, todolistId: string) => void
+    removeTask: (taskId: string, todolistId: string) => void
     changeTaskStatus: (taskId: string, isDone: boolean, todolistId: string) => void
     changeTaskTitle: (taskId: string, newValue: string, todolistId: string) => void
     filter: FilterValueTypes
@@ -28,24 +29,24 @@ type PropsType = {
 
 export const ToDoList = React.memo((props: PropsType) => {
     console.log('ToDoList')
-    const onAllClickHandler =useCallback (() => {
+    const onAllClickHandler = useCallback(() => {
         props.changeFilter('all', props.id)
-    },[props.changeFilter, props.id])
-    const onActiveClickHandler =useCallback (() => {
+    }, [props.changeFilter, props.id])
+    const onActiveClickHandler = useCallback(() => {
         props.changeFilter('active', props.id)
-    },[props.changeFilter, props.id])
-    const onCompletedClickHandler =useCallback (() => {
+    }, [props.changeFilter, props.id])
+    const onCompletedClickHandler = useCallback(() => {
         props.changeFilter('completed', props.id)
-    },[props.changeFilter, props.id])
+    }, [props.changeFilter, props.id])
     const removeTodolist = () => {
         props.removeTodolist(props.id)
     }
     const addTask = useCallback((title: string) => {
         props.addTask(title, props.id)
     }, [props.addTask, props.id])
-    const changeTodolistTitle =useCallback ((newTitle: string) => {
+    const changeTodolistTitle = useCallback((newTitle: string) => {
         props.changeTodolistTitle(props.id, newTitle)
-    },[ props.changeTodolistTitle, props.id])
+    }, [props.changeTodolistTitle, props.id])
 
     let tasksForTodoList = props.tasks
 
@@ -68,33 +69,14 @@ export const ToDoList = React.memo((props: PropsType) => {
             <AddItemForm addItem={addTask}/>
 
             <div>
-                {props.tasks.map(t => {
-
-                        const onRemoveHandler = () => {
-                            props.removeTask(t.id, props.id)
-                        }
-
-                        const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                            props.changeTaskStatus(t.id, e.currentTarget.checked, props.id)
-                        }
-                        const onChangeTitleHandler = (newValue: string) => {
-                            props.changeTaskTitle(t.id, newValue, props.id)
-                        }
-
-                        return <div key={t.id}
-                                    className={t.isDone === true ? 'is-done' : ''}
-                        >
-                            <Checkbox onChange={onChangeStatusHandler}
-                                      checked={t.isDone}/>
-                            <EditableSpan title={t.title}
-                                          onChange={onChangeTitleHandler}/>
-
-                            <IconButton onClick={onRemoveHandler}>
-                                <Delete/>
-                            </IconButton>
-
-                        </div>
-                    }
+                {props.tasks.map(t => <Task
+                    removeTask={props.removeTask}
+                    changeTaskStatus={props.changeTaskStatus}
+                    changeTaskTitle={props.changeTaskTitle}
+                    task={t}
+                    todolistId={props.id}
+                    key={t.id}
+                    />
                 )}
             </div>
 
